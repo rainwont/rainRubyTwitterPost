@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'twitter'
+require 'kconv' # UTF-8 を Shift-Jis に変換するライブラリ
 
 #証明を検証しない
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
@@ -16,4 +17,13 @@ client = Twitter::REST::Client.new do |config|
   config.access_token_secret = "tokenSecret"
 end
 
-client.update("Rubyからpost")
+##POST
+#client.update("Rubyからpost")
+#client.update ARGV[0]
+
+##タイムライン取得
+timeline = client.home_timeline  #タイムラインを取得
+timeline.each{ |status|
+  str = "(#{status.user.screen_name}) #{status.text}"
+  puts str.kconv(Kconv::SJIS, Kconv::UTF8)
+}
