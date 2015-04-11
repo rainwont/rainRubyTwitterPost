@@ -37,6 +37,11 @@ timeline.each do |status|
 #  rtCount        = "#{status.retweet_count}"
   favCount       = "#{status.favorite_count}"
 
+
+  print userName
+  puts '@' + userScreenName
+  puts text
+
 #作ってみた（テスト中）
 #ふぁぼの数だけ★を表示
 #
@@ -52,8 +57,12 @@ timeline.each do |status|
   starRed     = CE.fg(:red).get("★")
 
   favCount = favCount.to_i
-  if favCount < 10
-    puts starYellow * favCount
+  if favCount == 0
+
+  elsif favCount != 0 && favCount < 10
+    print starYellow * favCount
+    print favCount
+    puts 'fav'
   elsif favCount >= 10 && favCount <= 100
     fav10 = favCount / 10
     fav10 = fav10.floor
@@ -65,5 +74,7 @@ timeline.each do |status|
   else
     puts 'fav over 100'
   end
+
+  puts '-----------------------------------------------'
 
 end
