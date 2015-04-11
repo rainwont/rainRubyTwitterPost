@@ -30,6 +30,40 @@ end
 ##タイムライン取得
 timeline = client.home_timeline  #タイムラインを取得
 timeline.each do |status|
-  str = "(#{status.user.screen_name}) #{status.text}"
-  puts str
+  userName       = "#{status.user.name}"
+  userScreenName = "#{status.user.screen_name}"
+  text           = "#{status.text}"
+#  userClient     = "#{status.source}"
+#  rtCount        = "#{status.retweet_count}"
+  favCount       = "#{status.favorite_count}"
+
+#作ってみた（テスト中）
+#ふぁぼの数だけ★を表示
+#
+#1の位は黄色★
+#10ふぁぼで青色★１つ、20ふぁぼで青色★２つ・・・　
+#
+#100ふぁぼ以上の処理は未実装
+#10000ふぁぼを超えることもありえるので、その時の処理を書く必要あり
+#今のところ100ふぁぼより大きいとelseでコメント表示
+
+  starYellow  = CE.fg(:yellow).get("★")
+  starBlue    = CE.fg(:blue).get("★")
+  starRed     = CE.fg(:red).get("★")
+
+  favCount = favCount.to_i
+  if favCount < 10
+    puts starYellow * favCount
+  elsif favCount >= 10 && favCount <= 100
+    fav10 = favCount / 10
+    fav10 = fav10.floor
+    amari = favCount % 10   # 1の位のふぁぼ数を数える
+    print starBlue * fav10
+    print starYellow * amari
+    print favCount
+    puts 'fav'
+  else
+    puts 'fav over 100'
+  end
+
 end
