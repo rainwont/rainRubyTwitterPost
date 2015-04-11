@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'twitter'
 require 'yaml'
+require 'color_echo/get'  #コマンドラインに色をつける
 
 config = YAML.load_file 'config.yml'
 
