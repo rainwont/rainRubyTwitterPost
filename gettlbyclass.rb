@@ -2,7 +2,7 @@ require 'rubygems'
 require 'twitter'
 require 'pp'
 require 'kconv'
-
+require "io/console"
 
 API_KEY             = 'xxxx'
 API_SECRET          = 'xxxx'
@@ -64,15 +64,30 @@ end
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 tc = Timeline.new
-tc.confirm
-tc.gettl
-tc.viewtl
+tc.confirm  # 認証
+
+view_thread = Thread.new do
+  loop do
+    tc.gettl    # TL取得
+    tc.viewtl   # TL表示
+    sleep 60
+  end
+end
+
+
+kill_thread = Thread.new do
+  while STDIN.getch != 'q'; end # "q"を押すと停止
+  puts "停止中"
+  view_thread.kill
+end
+
+view_thread.join
+kill_thread.join
 
 # ツイートをPOST　引数がpostされる
 text = ARGV[0]
 
 if text != nil #引数あったらpost
-  text.kconv(Kconv::UTF8, Kconv::SJIS)
   puts "投稿中..."
   posttext = Kconv.toutf8(text)
 
